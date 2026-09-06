@@ -24,3 +24,8 @@ const PRODUCTS = [
   { id: "dec-01", name: "شريط إضاءة ديكوري ملون", category: "ديكوري", wattage: 8, colorTemp: "RGB متعدد الألوان", price: 12 },
   { id: "dec-02", name: "كشاف نجفة ديكورية", category: "ديكوري", wattage: 40, colorTemp: "3000K دافئ", price: 90 }
 ];
+
+// يسمح لسيرفرلس فنكشن (api/suggest-lighting.js) تستخدم نفس القائمة عن طريق require()
+if (typeof module !== "undefined" && module.exports) {
+  module.exports = PRODUCTS;
+}

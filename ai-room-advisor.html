@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>أفكار إضاءة بالذكاء الاصطناعي</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header class="site-header no-print">
+  <div class="brand"><span class="dot"></span> أدوات الإنارة</div>
+  <nav class="nav-links">
+    <a href="index.html">الرئيسية</a>
+    <a href="energy-calculator.html">حاسبة التوفير</a>
+    <a href="scene-configurator.html">مصمم المشهد</a>
+    <a href="ai-room-advisor.html" class="active">أفكار AI</a>
+  </nav>
+</header>
+
+<main class="page">
+  <h1 class="page-title">أفكار إضاءة بالذكاء الاصطناعي</h1>
+  <p class="page-subtitle">صوّر الغرفة أو المكان بالموبايل، والذكاء الاصطناعي بيقترحلك منتجات من كتالوجك وين تحطها ولوين.</p>
+
+  <div class="grid-2">
+    <div class="card">
+      <h3 style="margin-top:0">1) صوّر أو ارفع صورة المكان</h3>
+
+      <div class="field">
+        <input type="file" id="roomImageInput" accept="image/*" capture="environment">
+      </div>
+
+      <div id="imagePreviewWrap" class="hidden" style="margin:14px 0;">
+        <img id="imagePreview" style="max-width:100%; border-radius:10px; border:1px solid var(--card-border);">
+      </div>
+
+      <div class="field">
+        <label>ملاحظة إضافية (اختياري) — مثلاً "بدنا إضاءة دافئة" أو "المكان لمطعم"</label>
+        <input type="text" id="roomNote" placeholder="اكتب أي تفاصيل إضافية...">
+      </div>
+
+      <button class="btn btn-primary" id="getSuggestionsBtn" disabled>احصل على أفكار الإضاءة</button>
+      <p id="statusMsg" style="color:var(--text-dim); font-size:.85rem; margin-top:10px;"></p>
+    </div>
+
+    <div class="card">
+      <h3 style="margin-top:0">النتيجة</h3>
+      <div id="resultBody">
+        <p style="color:var(--text-dim)">ارفع صورة واضغط "احصل على أفكار الإضاءة" لتظهر الاقتراحات هون.</p>
+      </div>
+    </div>
+  </div>
+
+  <footer class="note no-print">
+    هاي الميزة بتحتاج مفتاح ANTHROPIC_API_KEY مضبوط بإعدادات المشروع على Vercel حتى تشتغل.
+  </footer>
+</main>
+
+<script src="data/products.js"></script>
+<script src="js/ai-room-advisor.js"></script>
+</body>
+</html>
