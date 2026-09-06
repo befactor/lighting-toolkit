@@ -1,4 +1,4 @@
-// حاسبة توفير الطاقة: تقليدي مقابل LED
+// حاسبة توفير الطاقة: قبل مقابل بعد (أي نوعين إنارة)
 // كل شي حسابات رياضية بسيطة، ما في اتصال إنترنت مطلوب.
 
 function fmt(num, digits = 2) {
@@ -83,13 +83,13 @@ function renderResults(r) {
       <div class="bar-track"><div class="bar-fill old" style="width:${oldPct}%"></div></div>
     </div>
     <div class="compare-bar">
-      <div class="bar-label"><span>الاستهلاك اليومي بعد LED</span><span>${fmt(r.newDailyKwh)} kWh</span></div>
+      <div class="bar-label"><span>الاستهلاك اليومي بالوحدة الجديدة</span><span>${fmt(r.newDailyKwh)} kWh</span></div>
       <div class="bar-track"><div class="bar-fill new" style="width:${newPct}%"></div></div>
     </div>
 
     <div class="stat-row" style="grid-template-columns:1fr 1fr;">
       <div class="stat">
-        <div class="label">إجمالي تكلفة الاستثمار (وحدات LED + تركيب)</div>
+        <div class="label">إجمالي تكلفة الاستثمار (وحدات جديدة + تركيب)</div>
         <div class="value">${c}${fmt(r.investment)}</div>
       </div>
       <div class="stat">
