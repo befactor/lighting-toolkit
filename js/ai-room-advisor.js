@@ -8,6 +8,14 @@ const getSuggestionsBtn = document.getElementById("getSuggestionsBtn");
 const statusMsg = document.getElementById("statusMsg");
 const resultBody = document.getElementById("resultBody");
 
+const lightType = document.getElementById("lightType");
+const colorTempSelect = document.getElementById("colorTempSelect");
+const renderWattage = document.getElementById("renderWattage");
+const renderLumens = document.getElementById("renderLumens");
+const renderImageBtn = document.getElementById("renderImageBtn");
+const renderStatusMsg = document.getElementById("renderStatusMsg");
+const renderResultWrap = document.getElementById("renderResultWrap");
+
 let selectedImageBase64 = null;
 let selectedMediaType = null;
 
@@ -24,6 +32,7 @@ roomImageInput.addEventListener("change", (e) => {
     imagePreview.src = dataUrl;
     imagePreviewWrap.classList.remove("hidden");
     getSuggestionsBtn.disabled = false;
+    renderImageBtn.disabled = false;
     statusMsg.textContent = "";
   };
   reader.readAsDataURL(file);
@@ -112,3 +121,55 @@ function renderSuggestions(data) {
     ${data.notes ? `<p style="color:var(--text-dim); font-size:.85rem; margin-top:14px;">${data.notes}</p>` : ""}
   `;
 }
+
+// ---------- توليد صورة واقعية للإضاءة ----------
+renderImageBtn.addEventListener("click", async () => {
+  if (!selectedImageBase64) return;
+
+  renderImageBtn.disabled = true;
+  renderStatusMsg.textContent = "جاري توليد الصورة… ممكن ياخذ نص دقيقة تقريباً.";
+  renderResultWrap.innerHTML = `<p style="color:var(--text-dim); font-size:.9rem;">⏳ بنستنى الصورة من الذكاء الاصطناعي...</p>`;
+
+  try {
+    const response = await fetch("/api/render-lighting", {
+      method: "POST",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify({
+        imageBase64: selectedImageBase64,
+        mediaType: selectedMediaType,
+        lightType: lightType.value,
+        colorTemp: colorTempSelect.value,
+        wattage: Number(renderWattage.value) || 0,
+        lumens: Number(renderLumens.value) || 0,
+        notes: roomNote.value.trim()
+      })
+    });
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      renderResultWrap.innerHTML = `
+        <div class="card" style="background:var(--bg-soft); border-color:var(--bad); padding:14px 16px;">
+          <p style="margin:0; color:var(--bad); font-size:.9rem;">⚠️ ${data.error || "صار في خطأ غير متوقع."}</p>
+        </div>
+      `;
+      return;
+    }
+
+    const dataUrl = `data:${data.mediaType || "image/jpeg"};base64,${data.imageBase64}`;
+    renderResultWrap.innerHTML = `
+      <img src="${dataUrl}" style="max-width:100%; border-radius:10px; border:1px solid var(--card-border); margin-bottom:12px;">
+      <a class="btn btn-ghost" href="${dataUrl}" download="غرفة-بعد-الإضاءة.jpg">⬇️ تحميل الصورة</a>
+      <p style="color:var(--text-dim); font-size:.8rem; margin-top:10px;">صورة تقريبية مولّدة بالذكاء الاصطناعي، للعرض والتوضيح فقط.</p>
+    `;
+  } catch (err) {
+    renderResultWrap.innerHTML = `
+      <div class="card" style="background:var(--bg-soft); border-color:var(--bad); padding:14px 16px;">
+        <p style="margin:0; color:var(--bad); font-size:.9rem;">⚠️ ما قدرنا نتواصل مع السيرفر. تأكد من اتصال الإنترنت وحاول مرة ثانية.</p>
+      </div>
+    `;
+  } finally {
+    renderImageBtn.disabled = false;
+    renderStatusMsg.textContent = "";
+  }
+});

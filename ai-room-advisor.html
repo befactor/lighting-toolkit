@@ -51,8 +51,53 @@
     </div>
   </div>
 
+  <div class="card" style="margin-top:20px;">
+    <h3 style="margin-top:0">2) شوف شكل الغرفة بعد تركيب الإضاءة (تجريبي)</h3>
+    <p style="color:var(--text-dim); font-size:.88rem; margin-top:-6px;">بيستخدم نفس الصورة اللي رفعتها فوق، ويولّد نسخة تقريبية تظهر شكل الإضاءة المطلوبة عليها.</p>
+
+    <div class="grid-2">
+      <div>
+        <div class="field">
+          <label>نوع الإضاءة</label>
+          <select id="lightType">
+            <option value="recessed ceiling spotlights">سبوت لايت غاطس</option>
+            <option value="hidden cove lighting">إنارة مخفية</option>
+            <option value="recessed ceiling spotlights and hidden cove lighting" selected>سبوت غاطس + إنارة مخفية</option>
+            <option value="wall-mounted decorative fixtures">كشافات حائطية ديكورية</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label>درجة حرارة اللون</label>
+          <select id="colorTempSelect">
+            <option value="3000K warm white" selected>3000K دافئ</option>
+            <option value="4000K natural white">4000K طبيعي</option>
+            <option value="6500K cool white">6500K بارد</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label>قدرة الكشاف (واط)</label>
+          <input type="number" id="renderWattage" value="7" min="0">
+        </div>
+
+        <div class="field">
+          <label>خرج الإضاءة (لومن)</label>
+          <input type="number" id="renderLumens" value="600" min="0">
+        </div>
+
+        <button class="btn btn-primary" id="renderImageBtn" disabled>ولّد صورة واقعية</button>
+        <p id="renderStatusMsg" style="color:var(--text-dim); font-size:.85rem; margin-top:10px;"></p>
+      </div>
+
+      <div id="renderResultWrap">
+        <p style="color:var(--text-dim); font-size:.9rem;">النتيجة رح تظهر هون بعد التوليد.</p>
+      </div>
+    </div>
+  </div>
+
   <footer class="note no-print">
-    هاي الميزة بتحتاج مفتاح ANTHROPIC_API_KEY مضبوط بإعدادات المشروع على Vercel حتى تشتغل.
+    هاي الصفحة بتحتاج مفتاحين مضبوطين بإعدادات المشروع على Vercel: <code>ANTHROPIC_API_KEY</code> (للاقتراحات) و<code>GEMINI_API_KEY</code> (لتوليد الصورة).
   </footer>
 </main>
 
