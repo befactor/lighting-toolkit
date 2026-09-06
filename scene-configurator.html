@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>مصمم مشهد الإضاءة</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header class="site-header no-print">
+  <div class="brand"><span class="dot"></span> أدوات الإنارة</div>
+  <nav class="nav-links">
+    <a href="index.html">الرئيسية</a>
+    <a href="energy-calculator.html">حاسبة التوفير</a>
+    <a href="scene-configurator.html" class="active">مصمم المشهد</a>
+  </nav>
+</header>
+
+<main class="page">
+  <h1 class="page-title">مصمم مشهد الإضاءة</h1>
+  <p class="page-subtitle">ارفع صورة الموقع، اضغط بأي مكان لتحط كشاف مقترح، واختار المنتج من الكتالوج.</p>
+
+  <div class="card no-print" style="margin-bottom:20px;">
+    <label>1) ارفع صورة الموقع</label>
+    <input type="file" id="imageInput" accept="image/*">
+  </div>
+
+  <div class="scene-layout">
+    <div class="card">
+      <div class="canvas-wrap" id="canvasWrap">
+        <p class="empty-hint" id="emptyHint">ارفع صورة أولاً من الأعلى، وبعدين اضغط عليها لتحط الكشافات.</p>
+        <canvas id="sceneCanvas" class="hidden"></canvas>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>الكشافات الموضوعة</h3>
+      <ul class="marker-list" id="markerList">
+        <li style="color:var(--text-dim); font-size:.88rem;">ما في كشافات بعد.</li>
+      </ul>
+      <div class="total-box">
+        <span>الإجمالي</span>
+        <span id="totalPrice">0</span>
+      </div>
+      <div class="actions-row no-print">
+        <button class="btn btn-ghost" id="exportBtn">⬇️ تصدير الصورة</button>
+        <button class="btn btn-ghost" id="printBtn">🖨️ طباعة / PDF</button>
+        <button class="btn btn-ghost" id="clearBtn">🗑️ مسح الكل</button>
+      </div>
+    </div>
+  </div>
+
+  <footer class="note no-print">عدّل قائمة المنتجات من ملف data/products.js.</footer>
+</main>
+
+<!-- Modal لاختيار المنتج عند وضع كشاف جديد -->
+<div class="modal-backdrop hidden" id="productModal">
+  <div class="card modal-box">
+    <h3>اختار المنتج</h3>
+
+    <div class="field">
+      <label>الفئة</label>
+      <select id="categorySelect"></select>
+    </div>
+
+    <div class="field">
+      <label>المنتج</label>
+      <select id="productSelect"></select>
+    </div>
+
+    <div class="field" id="productPreview" style="font-size:.85rem; color:var(--text-dim);"></div>
+
+    <div class="actions-row">
+      <button class="btn btn-primary" id="confirmMarkerBtn">إضافة</button>
+      <button class="btn btn-ghost" id="cancelMarkerBtn">إلغاء</button>
+    </div>
+  </div>
+</div>
+
+<script src="data/products.js"></script>
+<script src="js/scene-configurator.js"></script>
+</body>
+</html>
