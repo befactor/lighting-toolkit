@@ -19,7 +19,7 @@
 | المتغير | لأي جزء | من وين تجيبه |
 |---|---|---|
 | `ANTHROPIC_API_KEY` | اقتراحات المنتجات النصية | [console.anthropic.com](https://console.anthropic.com) |
-| `GEMINI_API_KEY` | توليد صورة الغرفة بعد الإضاءة | [aistudio.google.com](https://aistudio.google.com) (فيه باقة مجانية للبداية) |
+| `OPENAI_API_KEY` | توليد صورة الغرفة بعد الإضاءة | [platform.openai.com](https://platform.openai.com) (الحد الأدنى للشحن 5$، أرخص من بدائل تانية) |
 
 بعد ما تضيفهم، اعمل **Redeploy** للمشروع (من تبويب Deployments → ⋯ → Redeploy) حتى يتعرف عليهم.
 
@@ -36,7 +36,7 @@ lighting-toolkit/
 ├── style.css                    الستايل المشترك لكل الصفحات
 ├── api/
 │   ├── suggest-lighting.js      سيرفرلس فنكشن يتصل بـ Claude API (اقتراح منتجات)
-│   └── render-lighting.js       سيرفرلس فنكشن يتصل بـ Gemini API (توليد صورة الإضاءة)
+│   └── render-lighting.js       سيرفرلس فنكشن يتصل بـ OpenAI Image API (توليد صورة الإضاءة)
 ├── data/
 │   └── products.js              كتالوج المنتجات — عدّله بمنتجاتك الحقيقية
 └── js/
