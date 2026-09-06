@@ -151,6 +151,7 @@ renderImageBtn.addEventListener("click", async () => {
       renderResultWrap.innerHTML = `
         <div class="card" style="background:var(--bg-soft); border-color:var(--bad); padding:14px 16px;">
           <p style="margin:0; color:var(--bad); font-size:.9rem;">⚠️ ${data.error || "صار في خطأ غير متوقع."}</p>
+          ${data.details ? `<p style="margin:8px 0 0; color:var(--text-dim); font-size:.75rem; word-break:break-all;">${String(data.details).slice(0, 400)}</p>` : ""}
         </div>
       `;
       return;

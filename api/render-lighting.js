@@ -26,22 +26,32 @@ module.exports = async (req, res) => {
 
   const promptText = `Using the provided photo of a room, add realistic ${lightType || "recessed ceiling spotlights and hidden cove lighting"} illumination effects. The light color temperature is ${colorTemp || "3000K warm white"}, each fixture is approximately ${wattage || 7} watts producing about ${lumens || 600} lumens — keep the glow soft and realistic, not overexposed, matching that brightness level. Preserve the room's exact structure, walls, floor, window, furniture, and camera angle exactly as in the original photo — only add the lighting effect itself (the fixtures' glow, soft light pools on surfaces, warm color cast on nearby walls/ceiling). Make the result photorealistic, like a real estate photo taken with the lights turned on at dusk.${notes ? ` Additional note: ${notes}` : ""}`;
 
+  const model = "gemini-3.1-flash-image";
+
   try {
-    const response = await fetch("https://generativelanguage.googleapis.com/v1beta/interactions", {
-      method: "POST",
-      headers: {
-        "content-type": "application/json",
-        "x-goog-api-key": apiKey
-      },
-      body: JSON.stringify({
-        model: "gemini-3.1-flash-image",
-        input: [
-          { type: "text", text: promptText },
-          { type: "image", mime_type: mediaType || "image/jpeg", data: imageBase64 }
-        ],
-        response_format: { type: "image", mime_type: "image/jpeg" }
-      })
-    });
+    const response = await fetch(
+      `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent`,
+      {
+        method: "POST",
+        headers: {
+          "content-type": "application/json",
+          "x-goog-api-key": apiKey
+        },
+        body: JSON.stringify({
+          contents: [
+            {
+              parts: [
+                { text: promptText },
+                { inlineData: { mimeType: mediaType || "image/jpeg", data: imageBase64 } }
+              ]
+            }
+          ],
+          generationConfig: {
+            responseModalities: ["IMAGE"]
+          }
+        })
+      }
+    );
 
     if (!response.ok) {
       const details = await response.text();
@@ -54,23 +64,15 @@ module.exports = async (req, res) => {
     let outImageData = null;
     let outImageMime = "image/jpeg";
 
-    if (data.output_image && data.output_image.data) {
-      outImageData = data.output_image.data;
-      outImageMime = data.output_image.mime_type || outImageMime;
-    } else if (Array.isArray(data.steps)) {
-      for (const step of data.steps) {
-        const content = Array.isArray(step.content) ? step.content : [];
-        const imgPart = content.find(c => c.type === "image");
-        if (imgPart) {
-          outImageData = imgPart.data;
-          outImageMime = imgPart.mime_type || outImageMime;
-          break;
-        }
-      }
+    const parts = data?.candidates?.[0]?.content?.parts || [];
+    const imgPart = parts.find(p => p.inlineData && p.inlineData.data);
+    if (imgPart) {
+      outImageData = imgPart.inlineData.data;
+      outImageMime = imgPart.inlineData.mimeType || outImageMime;
     }
 
     if (!outImageData) {
-      res.status(502).json({ error: "ما رجعت خدمة الصور صورة صالحة، جرب مرة ثانية." });
+      res.status(502).json({ error: "ما رجعت خدمة الصور صورة صالحة، جرب مرة ثانية.", details: JSON.stringify(data).slice(0, 500) });
       return;
     }
 
